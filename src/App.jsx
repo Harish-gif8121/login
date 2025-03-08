@@ -17,57 +17,73 @@ function LoginPage() {
     course: '',
     city: ''
   });
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // If the field is "name", validate it to allow only alphabets and spaces
-    if (name === "name") {
-      // Remove any non-alphabetic characters or numbers immediately
-      const sanitizedValue = value.replace(/[^A-Za-z\s]/g, ''); // This removes any non-alphabetic characters or numbers
+     let newErrors = { ...errors };
+    if (name === "name" || name === "course" || name=== "city") {
+      if (/[^A-Za-z\s]/.test(value)) {
+        const sanitizedValue = value.replace(/[^A-Za-z\s]/g, ''); 
+        setFormData({
+          ...formData,
+          [name]: sanitizedValue
+        });
+        newErrors[name] = 'Only alphabets and spaces are allowed';
+      } else {
+        newErrors[name] = '';
+        setFormData({
+          ...formData,
+          [name]: value
+        });
+      }
+    } 
+  else if (name === "phone") {
+    if(/[^0-9]/.test(value)) {
+      const sanitizedValue = value.replace(/[^0-9]/g, '');
       setFormData({
         ...formData,
         [name]: sanitizedValue
       });
+      newErrors[name] = 'Phone number can only contain numbers';
+    } else if (value.length > 10) {
+           newErrors[name] = 'Phone number cannot exceed 10 digits';
+      setFormData({
+        ...formData,
+        [name]: value.substring(0, 10) 
+      });
     } else {
-      // For other fields, just update the form data
+      newErrors[name] = '';
       setFormData({
         ...formData,
         [name]: value
       });
     }
+  } 
 
-  };
+  else {
+    setFormData({
+      ...formData,
+      [name]: value
+    });
   
-  // const handleNameInput = (e) =>
-  //   {
-  //   const value =e.target.value;
-  //   if(/^[A-Za-z\s]+$/.test(value)){
-  //     e.preventDefault();
-  //   }
-  //   else{
-  //       setFormData({
-  //       ...formData,
-  //       name:value
-  //                   });
-  //        }
-  // };
+    }
+  
+    setErrors(newErrors);
+  };
 
-
-  const validateForm = () => {
+  function validateForm() {
     let isValid = true;
     let errors = {};
-    const namePattern = /^[A-Za-z\s]+$/; 
+    const namePattern = /^[A-Za-z\s]+$/;
     if (formData.name.trim() === '') {
-    errors.name = 'Name is required';
-    isValid = false;
+      errors.name = 'Name is required';
+      isValid = false;
     } else if (formData.name.length < 3) {
-    errors.name = 'Name must be at least 3 characters long';
-    isValid = false;
+      errors.name = 'Name must be at least 3 characters long';
+      isValid = false;
     } else if (!namePattern.test(formData.name)) {
-    errors.name = 'Name can only contain letters and spaces';
-    isValid = false;
-     }
+      errors.name = 'Name can only contain letters and spaces';
+      isValid = false;
+    }
 
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (formData.email.trim() === '') {
@@ -78,8 +94,8 @@ function LoginPage() {
       isValid = false;
     }
 
-  
-    const phonePattern = /^[0-9]{10}$/; 
+
+    const phonePattern = /^[0-9]{10}$/;
     if (formData.phone.trim() === '') {
       errors.phone = 'Phone number is required';
       isValid = false;
@@ -87,28 +103,27 @@ function LoginPage() {
       errors.phone = 'Please enter a valid phone number (10 digits)';
       isValid = false;
     }
-    const coursePattern=/^[A-Za-z\s]+$/;
-
+    const coursePattern = /^[A-Za-z\s]+$/;
     if (formData.course.trim() === '') {
-      errors.course ='course is required';
+      errors.name = 'course is required';
       isValid = false;
-    } 
+    }
     else if (!coursePattern.test(formData.course)) {
       errors.course = 'course only contain letters and spaces';
       isValid = false;
     }
-    const cityPattern=/^[A-Za-z\s]+$/;
+    const cityPattern = /^[A-Za-z\s]+$/;
     if (formData.city.trim() === '') {
-      errors.city ='city is required';
+      errors.city = 'city is required';
       isValid = false;
-    } 
+    }
     else if (!cityPattern.test(formData.city)) {
       errors.city = 'city only contain letters and spaces';
       isValid = false;
     }
     setErrors(errors);
     return isValid;
-  };
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
