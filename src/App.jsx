@@ -57,7 +57,19 @@ function LoginPage() {
         [name]: value
       });
     }
-  } 
+  }  
+  else if (name === "email") {
+   
+    if (value.charAt(0) === value.charAt(0).toUpperCase()) {
+      newErrors[name] = 'Email should not start with a capital letter';
+    } else {
+      newErrors[name] = ''; 
+    }
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  }
 
   else {
     setFormData({
