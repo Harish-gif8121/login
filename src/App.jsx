@@ -17,30 +17,57 @@ function LoginPage() {
     course: '',
     city: ''
   });
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+
+    // If the field is "name", validate it to allow only alphabets and spaces
+    if (name === "name") {
+      // Remove any non-alphabetic characters or numbers immediately
+      const sanitizedValue = value.replace(/[^A-Za-z\s]/g, ''); // This removes any non-alphabetic characters or numbers
+      setFormData({
+        ...formData,
+        [name]: sanitizedValue
+      });
+    } else {
+      // For other fields, just update the form data
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
+
   };
+  
+  // const handleNameInput = (e) =>
+  //   {
+  //   const value =e.target.value;
+  //   if(/^[A-Za-z\s]+$/.test(value)){
+  //     e.preventDefault();
+  //   }
+  //   else{
+  //       setFormData({
+  //       ...formData,
+  //       name:value
+  //                   });
+  //        }
+  // };
+
 
   const validateForm = () => {
     let isValid = true;
     let errors = {};
-    const namePattern=/^[A-Za-z\s]+$/;
+    const namePattern = /^[A-Za-z\s]+$/; 
     if (formData.name.trim() === '') {
-      errors.name = 'Name is required';
-      isValid = false;
+    errors.name = 'Name is required';
+    isValid = false;
     } else if (formData.name.length < 3) {
-      errors.name = 'Name must be at least 3 characters long';
-      isValid = false;
-    }
-    else if (!namePattern.test(formData.name)) {
-      errors.name = 'Name can only contain letters and spaces';
-      isValid = false;
-    }
+    errors.name = 'Name must be at least 3 characters long';
+    isValid = false;
+    } else if (!namePattern.test(formData.name)) {
+    errors.name = 'Name can only contain letters and spaces';
+    isValid = false;
+     }
 
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (formData.email.trim() === '') {
@@ -61,8 +88,9 @@ function LoginPage() {
       isValid = false;
     }
     const coursePattern=/^[A-Za-z\s]+$/;
+
     if (formData.course.trim() === '') {
-      errors.name ='course is required';
+      errors.course ='course is required';
       isValid = false;
     } 
     else if (!coursePattern.test(formData.course)) {
@@ -74,7 +102,7 @@ function LoginPage() {
       errors.city ='city is required';
       isValid = false;
     } 
-    else if (!cityPattern.test(formData.course)) {
+    else if (!cityPattern.test(formData.city)) {
       errors.city = 'city only contain letters and spaces';
       isValid = false;
     }
