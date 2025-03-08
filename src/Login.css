@@ -8,7 +8,7 @@
 }
 
 .login-form {
-  background-color: #e9b1b1;
+  background-color: #a19090;
   padding: 30px;
   border-radius: 18px;
   width: 300px; 
@@ -51,7 +51,7 @@
 .login-form button {
   width: 100%;
   padding: 12px;
-  background-color: #4777ad; 
+  background-color: #b8cbe0; 
   color: rgb(8, 6, 6);
   border: 2px solid;
   border-radius: 4px;
@@ -60,7 +60,7 @@
 }
 
 .login-form button:hover {
-  background-color: #0056b3; 
+  background-color: #1960ac; 
 }
 .error{
   color: rgb(68, 224, 37);
